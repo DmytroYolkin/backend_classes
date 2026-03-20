@@ -1,0 +1,9 @@
+VaccinatinRegistrationId;Name;FirstName;EMail;YearOfBirth;VaccinationDate;VaccinTypeId;VaccinationLocationId
+d2a79300-cdad-44b1-96bd-560361d04cf1;De Preester;Dieter;dieter@vices.be;1978;1/1/2022;4e2a72fb-f4fa-416f-87cd-ea338b518519;c2bb5085-52d8-4278-9eb1-9defeb483b0e
+0e2fa67e-e808-4a6d-af7a-f87cb47d85ee;De Preester;Dieter;dieter@howest.be;1956;1/1/2022;4e2a72fb-f4fa-416f-87cd-ea338b518519;c2bb5085-52d8-4278-9eb1-9defeb483b0e
+d12a550f-2eaf-4bf8-b392-a110b7fd2328;De Preester;Dieter;dieter@dt.be;1985;1/1/2022;4e2a72fb-f4fa-416f-87cd-ea338b518519;c2bb5085-52d8-4278-9eb1-9defeb483b0e
+885c93ee-b123-4b96-92e4-b4ea9deae204;De Preester;Dieter;dieter@test.be;1999;1/1/2022;4e2a72fb-f4fa-416f-87cd-ea338b518519;c2bb5085-52d8-4278-9eb1-9defeb483b0e
+7f191c46-f264-4710-8c80-e17d6b563d09;Poetin;Williams;mary.williams@example.com;1952;1/1/202;4e2a72fb-f4fa-416f-87cd-ea338b518519;0bb537ea-8209-422f-a9e1-2c1e37d0cb4d
+ef783c91-ff02-4fe2-bdfb-48ccde57d331;Garcia;Linda;linda.garcia@test.edu;1952;1/1/202;4e2a72fb-f4fa-416f-87cd-ea338b518519;0bb537ea-8209-422f-a9e1-2c1e37d0cb4d
+47cdc508-e5f9-4a46-8625-b3dc624410c1;Davis;James;james.davis@sample.org;1952;1/1/202;4e2a72fb-f4fa-416f-87cd-ea338b518519;0bb537ea-8209-422f-a9e1-2c1e37d0cb4d
+fc606c7a-7090-4376-90ae-ff8290c1c450;Patricia;Brown;patricia.brown@sample.org;1952;1/1/202;4e2a72fb-f4fa-416f-87cd-ea338b518519;0bb537ea-8209-422f-a9e1-2c1e37d0cb4d
