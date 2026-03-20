@@ -1,3 +1,7 @@
+using AutoMapper;
+using Howest.Lab1.Ex3.Models;
+using Howest.Lab1.Ex3.Services;
+
 namespace Howest.Lab1.Ex3.DTO;
 
 public class VaccinRegistrationDTO
@@ -21,26 +25,32 @@ public class DTOProfile : Profile{
     }
 }
 
-public class VaccinLocationResolver : IValueResolver<VaccinRegistration, VaccinRegistrationDTO,string>{
-    public string Resolve(VaccinRegistration source, VaccinRegistrationDTO destination,string dest, ResolutionContext context)
+public class VaccinLocationResolver : IValueResolver<VaccinRegistration, VaccinRegistrationDTO, string>
+{
+    private readonly IVaccinationService _vaccinationService;
+
+    public VaccinLocationResolver(IVaccinationService vaccinationService)
     {
-        if (context.Items.TryGetValue("locations", out var locObj) && locObj is List<VaccinationLocation> locations)
-        {
-            var location = locations.FirstOrDefault(l => l.VaccinationLocationId == source.VaccinationLocationId);
-            return location?.Name ?? "Unknown Location";
-        }
-        return "Unknown Location";
+        _vaccinationService = vaccinationService;
+    }
+
+    public string Resolve(VaccinRegistration source, VaccinRegistrationDTO destination, string dest, ResolutionContext context)
+    {
+        return _vaccinationService.GetLocationById(source.VaccinationLocationId)?.Name ?? "Unknown Location";
     }
 }
 
-public class VaccinResolver : IValueResolver<VaccinRegistration, VaccinRegistrationDTO,string>{
-    public string Resolve(VaccinRegistration source, VaccinRegistrationDTO destination,string dest, ResolutionContext context)
+public class VaccinResolver : IValueResolver<VaccinRegistration, VaccinRegistrationDTO, string>
+{
+    private readonly IVaccinationService _vaccinationService;
+
+    public VaccinResolver(IVaccinationService vaccinationService)
     {
-        if (context.Items.TryGetValue("vaccins", out var vacObj) && vacObj is List<VaccinType> vaccins)
-        {
-            var vaccin = vaccins.FirstOrDefault(l => l.VaccinTypeId == source.VaccinTypeId);
-            return vaccin?.Name ?? "Unknown Vaccine";
-        }
-        return "Unknown Vaccine";
+        _vaccinationService = vaccinationService;
+    }
+
+    public string Resolve(VaccinRegistration source, VaccinRegistrationDTO destination, string dest, ResolutionContext context)
+    {
+        return _vaccinationService.GetVaccinById(source.VaccinTypeId)?.Name ?? "Unknown Vaccine";
     }
 }

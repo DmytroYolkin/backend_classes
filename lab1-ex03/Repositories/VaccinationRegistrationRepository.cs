@@ -4,6 +4,7 @@ public interface IVaccinationRegistrationRepository
 {
     VaccinRegistration AddRegistration(VaccinRegistration registration);
     List<VaccinRegistration> GetRegistrations();
+    VaccinRegistration GetOneById(Guid id);
 }
 
 public class VaccinationRegistrationRepository : IVaccinationRegistrationRepository
@@ -21,4 +22,10 @@ public class VaccinationRegistrationRepository : IVaccinationRegistrationReposit
     {
         return _registrations;
     }
+
+    public VaccinRegistration GetOneById(Guid id)
+    {
+        return _registrations.FirstOrDefault(r => r.VaccinatinRegistrationId == id);
+    }
+
 }

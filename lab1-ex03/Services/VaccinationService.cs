@@ -5,6 +5,8 @@ public interface IVaccinationService
     List<VaccinationLocation> GetLocations();
     List<VaccinRegistration> GetRegistrations();
     List<VaccinType> GetVaccins();
+    VaccinType GetVaccinById(Guid id);
+    VaccinationLocation GetLocationById(Guid id);
 }
 
 public class VaccinationService : IVaccinationService
@@ -38,5 +40,15 @@ public class VaccinationService : IVaccinationService
     public List<VaccinType> GetVaccins()
     {
         return _vaccinTypeRepository.GetVaccinTypes();
+    }
+
+    public VaccinType GetVaccinById(Guid id)
+    {
+        return _vaccinTypeRepository.GetVaccinTypes().FirstOrDefault(v => v.VaccinTypeId == id);
+    }
+
+    public VaccinationLocation GetLocationById(Guid id)
+    {
+        return _vaccinationLocationRepository.GetLocations().FirstOrDefault(l => l.VaccinationLocationId == id);
     }
 }

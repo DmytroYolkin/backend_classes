@@ -45,12 +45,7 @@ app.MapPost("/registrations", (IValidator<VaccinRegistration> validator, IVaccin
 
 app.MapGet("/registrations", (IMapper mapper, IVaccinationService vaccinationService) =>
 {
-
-    var mapped = mapper.Map<List<VaccinRegistrationDTO>>(vaccinationService.GetRegistrations(),opts =>
-    {
-        opts.Items["locations"] = vaccinationService.GetLocations();
-        opts.Items["vaccins"] = vaccinationService.GetVaccins();
-    });
+    var mapped = mapper.Map<List<VaccinRegistrationDTO>>(vaccinationService.GetRegistrations());
     return Results.Ok(mapped);
 });
 
