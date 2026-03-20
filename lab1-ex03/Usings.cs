@@ -1,0 +1,9 @@
+global using Howest.Lab1.Ex3.Models;
+global using FluentValidation.AspNetCore;
+global using FluentValidation;
+global using Howest.Lab1.Ex3.Validations;
+global using Howest.Lab1.Ex3.Repositories;
+global using Howest.Lab1.Ex3.Services;
+global using AutoMapper;
+global using Howest.Lab1.Ex3.DTO;
+global using Microsoft.AspNetCore.Diagnostics;
