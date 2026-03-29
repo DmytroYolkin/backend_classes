@@ -1,0 +1,76 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+
+# ASP.NET Core
+appsettings.Development.json
+
+# Publish output
+publish/
+*.publishproj
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# IIS Express
+iisexpress/
+
+# Coverage / Test results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Dotnet tools
+.dotnet/
+
+# EF Core migrations snapshot (optional)
+# Uncomment if you don't want to track snapshots
+# *Snapshot.cs
+
+# Secrets
+secrets.json
+
+# Static files (if generated)
+wwwroot/dist/
+wwwroot/lib/
+
+# Node (if using frontend tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+tests/
+appsettings.json
+appsettings.Development.json
+
+files/
