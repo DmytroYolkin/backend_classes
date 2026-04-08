@@ -9,10 +9,23 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
+using Serilog;
+using Microsoft.Extensions.Caching.Memory;
+using System.Text.Json;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog();
+
 // Add services to the container.
+
+// Add Memory Cache
+builder.Services.AddMemoryCache();
 
 // Add API versioning
 builder.Services.AddApiVersioning(options => {
@@ -84,9 +97,16 @@ app.UseHttpsRedirection();
 var travelersGroup = app.NewVersionedApi("Travelers").MapGroup("/travelers").HasApiVersion(2.0);
 
 // 1. Show all travelers
-travelersGroup.MapGet("/", async (ITravelerService service) =>
+travelersGroup.MapGet("/", async (ITravelerService service, IMemoryCache cache, ILogger<Program> logger) =>
 {
-    var travelers = await service.GetAllTravelersAsync();
+    const string cacheKey = "all_travelers";
+    if (!cache.TryGetValue(cacheKey, out List<TravelerDto>? travelers))
+    {
+        travelers = await service.GetAllTravelersAsync();
+        cache.Set(cacheKey, travelers, TimeSpan.FromMinutes(5));
+    }
+    
+    logger.LogDebug($"Get all travelers {JsonSerializer.Serialize(travelers)}");
     return Results.Ok(travelers);
 })
 .WithName("GetTravelers");
@@ -137,9 +157,16 @@ var destinationsApi = app.NewVersionedApi("Destinations");
 var destinationsV2Group = destinationsApi.MapGroup("/destinations").HasApiVersion(2.0);
 
 // Show all destinations V2
-destinationsV2Group.MapGet("/", async (IDestinationService service) =>
+destinationsV2Group.MapGet("/", async (IDestinationService service, IMemoryCache cache, ILogger<Program> logger) =>
 {
-    var destinations = await service.GetAllDestinationsV2Async();
+    const string cacheKey = "all_destinations_v2";
+    if (!cache.TryGetValue(cacheKey, out List<DestinationV2Dto>? destinations))
+    {
+        destinations = await service.GetAllDestinationsV2Async();
+        cache.Set(cacheKey, destinations, TimeSpan.FromMinutes(5));
+    }
+    
+    logger.LogDebug($"Get all destinations {JsonSerializer.Serialize(destinations)}");
     return Results.Ok(destinations);
 })
 .WithName("GetDestinationsV2");
