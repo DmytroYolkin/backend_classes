@@ -1,6 +1,7 @@
 using ex03_ef_postgresql.DTOs;
 using ex03_ef_postgresql.Models;
 using ex03_ef_postgresql.Repositories;
+using ex03_ef_postgresql.Exceptions;
 using FluentValidation;
 
 namespace ex03_ef_postgresql.Services;
@@ -38,7 +39,7 @@ public class TravelerService : ITravelerService
     {
         if (await _travelerRepository.ExistsByPassportNumberAsync(input.PassportNumber))
         {
-            throw new ArgumentException("Passport number already exists.");
+            throw new PassportAlreadyExistsException(input.PassportNumber);
         }
 
         var traveler = new Traveler
@@ -61,10 +62,10 @@ public class TravelerService : ITravelerService
     public async Task<TravelerDetailDto?> AddTravelerToDestinationAsync(int travelerId, int destinationId)
     {
         var traveler = await _travelerRepository.GetByIdAsync(travelerId);
-        if (traveler == null) return null;
+        if (traveler == null) throw new ResourceNotFoundException($"Traveler with ID {travelerId} not found");
 
         var destination = await _destinationRepository.GetByIdAsync(destinationId);
-        if (destination == null) return null; // Or throw EntityNotFoundException
+        if (destination == null) throw new ResourceNotFoundException($"Destination with ID {destinationId} not found");
 
         if (!traveler.Destinations.Any(d => d.Id == destinationId))
         {

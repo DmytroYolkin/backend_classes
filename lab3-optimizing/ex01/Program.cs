@@ -4,6 +4,7 @@ using ex03_ef_postgresql.Validators;
 using ex03_ef_postgresql.DTOs;
 using ex03_ef_postgresql.Repositories;
 using ex03_ef_postgresql.Services;
+using ex03_ef_postgresql.Exceptions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -28,6 +29,9 @@ builder.Services.AddApiVersioning(options => {
 builder.Services.AddDbContext<TravelDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add Exception Handler
+builder.Services.AddProblemDetails();
+
 // Add validators
 builder.Services.AddScoped<IValidator<Traveler>, TravelerValidator>();
 builder.Services.AddScoped<IValidator<Destination>, DestinationValidator>();
@@ -41,6 +45,7 @@ builder.Services.AddScoped<IGuideRepository, GuideRepository>();
 builder.Services.AddScoped<ITravelerService, TravelerService>(); // Note: implementation uses IValidator
 builder.Services.AddScoped<IDestinationService, DestinationService>();
 builder.Services.AddScoped<IGuideService, GuideService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 // Configure JSON options
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
@@ -49,6 +54,24 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 });
 
 var app = builder.Build();
+
+app.UseExceptionHandler(exceptionHandlerApp =>
+{
+    exceptionHandlerApp.Run(async context =>
+    {
+        var exception = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>()?.Error;
+        if (exception is ResourceNotFoundException)
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            await context.Response.WriteAsJsonAsync(new { error = exception.Message });
+        }
+        else if (exception is PassportAlreadyExistsException)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(new { error = exception.Message });
+        }
+    });
+});
 
 using (var scope = app.Services.CreateScope())
 {
@@ -146,6 +169,34 @@ guidesGroup.MapGet("/", async (string? include, IGuideService service) =>
     return Results.Ok(guides);
 })
 .WithName("GetGuides");
+
+var uploadsApi = app.NewVersionedApi("Uploads");
+var uploadsGroup = uploadsApi.MapGroup("/upload").HasApiVersion(2.0);
+
+// 9. Upload CSV file
+uploadsGroup.MapPost("/", async (IFormFile file, IFileService fileService) =>
+{
+    try
+    {
+        var filePath = await fileService.SaveFileAsync(file);
+        return Results.Ok(new { message = "File uploaded successfully", path = filePath });
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("UploadFile")
+.Accepts<IFormFile>("multipart/form-data")
+.DisableAntiforgery();
+
+// 10. Write Database Data to CSV
+uploadsGroup.MapGet("/export", async (IFileService fileService) =>
+{
+    var (content, fileName) = await fileService.ExportDatabaseToCsvAsync();
+    return Results.File(content, "text/csv", fileName);
+})
+.WithName("ExportToCsv");
 
 // 5. Get Guide based on Id
 guidesGroup.MapGet("/{id}", async (int id, string? include, IGuideService service) =>
