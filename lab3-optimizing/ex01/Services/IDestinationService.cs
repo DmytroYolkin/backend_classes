@@ -1,0 +1,10 @@
+using ex03_ef_postgresql.DTOs;
+
+namespace ex03_ef_postgresql.Services;
+
+public interface IDestinationService
+{
+    Task<List<DestinationDto>> GetAllDestinationsAsync();
+    Task<List<DestinationV2Dto>> GetAllDestinationsV2Async();
+    Task<DestinationDto> AddDestinationAsync(DestinationDto input);
+}
