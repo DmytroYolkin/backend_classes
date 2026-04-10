@@ -1,0 +1,66 @@
+@baseUrl = https://localhost:7216/api
+
+### Create a new car
+POST {{baseUrl}}/cars
+Content-Type: application/json
+
+{
+  "brand": "Toyota",
+  "model": "Corolla",
+  "plate": "ABC-123",
+  "color": "Blue"
+}
+
+### Create another car
+POST {{baseUrl}}/cars
+Content-Type: application/json
+
+{
+  "brand": "BMW",
+  "model": "X5",
+  "plate": "BMW-001",
+  "color": "Black"
+}
+
+### Get all cars
+GET {{baseUrl}}/cars
+
+### Start parking session (Car 1)
+POST {{baseUrl}}/registrations/start
+Content-Type: application/json
+
+{
+  "plate": "ABC-123",
+  "carId": 1
+}
+
+### Start parking session (Car 2)
+POST {{baseUrl}}/registrations/start
+Content-Type: application/json
+
+{
+  "plate": "BMW-001",
+  "carId": 2
+}
+
+### Get all registrations
+GET {{baseUrl}}/registrations
+
+### Stop parking session (Registration 1)
+PUT {{baseUrl}}/registrations/1/stop
+Content-Type: application/json
+
+### Stop parking session (Registration 2)
+PUT {{baseUrl}}/registrations/2/stop
+Content-Type: application/json
+
+### Test invalid license plate
+POST {{baseUrl}}/cars
+Content-Type: application/json
+
+{
+  "brand": "Honda",
+  "model": "Civic",
+  "plate": "INVALID@",
+  "color": "Red"
+}

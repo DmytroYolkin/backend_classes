@@ -1,0 +1,11 @@
+global using labo_01_parking_api.Models;
+global using labo_01_parking_api.Context;
+global using labo_01_parking_api.Services;
+global using labo_01_parking_api.Repositories;
+global using labo_01_parking_api.DTO;
+global using labo_01_parking_api.Validators;
+global using labo_01_parking_api.Http;
+global using labo_01_parking_api.Mappings;
+global using FluentValidation;
+global using Microsoft.EntityFrameworkCore;
+global using AutoMapper;
