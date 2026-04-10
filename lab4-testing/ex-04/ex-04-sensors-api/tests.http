@@ -1,0 +1,54 @@
+@baseUrl = http://localhost:5005
+
+### 1. Register a Sensor
+# @name createSensor
+POST {{baseUrl}}/sensors
+Content-Type: application/json
+
+{
+  "name": "Living Room Temp",
+  "location": "First Floor",
+  "phoneNumber": "+32470001234"
+}
+
+###
+
+@sensorId = {{createSensor.response.body.id}}
+
+### 2. Get All Sensors
+GET {{baseUrl}}/sensors
+
+###
+
+### 3. Get Sensor by ID
+GET {{baseUrl}}/sensors/{{sensorId}}
+
+###
+
+### 4. Submit a Reading (Value in SMS range: 20-50)
+POST {{baseUrl}}/sensors/{{sensorId}}/readings
+Content-Type: application/json
+
+{
+  "value": 35.5
+}
+
+###
+
+### 5. Submit a Reading (Value outside SMS range)
+POST {{baseUrl}}/sensors/{{sensorId}}/readings
+Content-Type: application/json
+
+{
+  "value": 15.0
+}
+
+###
+
+### 6. List Readings for Sensor
+GET {{baseUrl}}/sensors/{{sensorId}}/readings
+
+###
+
+### 7. Delete Sensor
+DELETE {{baseUrl}}/sensors/{{sensorId}}

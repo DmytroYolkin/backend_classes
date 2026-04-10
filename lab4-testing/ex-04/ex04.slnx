@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ex-04-sensors-api/ex-04-sensors-api.csproj" />
+  <Project Path="ex-04-sensors-tests/ex-04-sensors-tests.csproj" />
+</Solution>

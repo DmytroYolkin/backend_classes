@@ -1,0 +1,12 @@
+﻿global using Xunit;
+global using FluentAssertions;
+global using Moq;
+global using AutoMapper;
+global using labo_01_parking_api.Validators;
+global using labo_01_parking_api.Services;
+global using labo_01_parking_api.DTO;
+global using labo_01_parking_api.Models;
+global using labo_01_parking_api.Repositories;
+global using labo_01_parking_api.Mappings;
+global using labo_01_parking_test.Repositories;
+global using FluentValidation;
