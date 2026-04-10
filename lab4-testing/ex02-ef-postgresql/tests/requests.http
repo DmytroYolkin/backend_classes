@@ -1,0 +1,30 @@
+@host = http://localhost:5288
+
+### 1. Add Person
+POST {{host}}/persons
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "age": 30,
+    "email": "john.doe@example.com"
+}
+
+### 2. Update Person
+PUT {{host}}/persons/1
+Content-Type: application/json
+
+{
+    "name": "Jane Doe Updated",
+    "age": 31,
+    "email": "jane.doe@example.com"
+}
+
+### 3. Delete Person
+DELETE {{host}}/persons/1
+
+### 4. Retrieve a Person
+GET {{host}}/persons/1
+
+### 5. Retrieve all Persons
+GET {{host}}/persons
