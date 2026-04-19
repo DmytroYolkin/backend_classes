@@ -1,0 +1,40 @@
+@host = http://localhost:5142
+@graphql = {{host}}/graphql
+
+### REST - Get all products
+GET {{host}}/api/products
+
+### REST - Add a product
+POST {{host}}/api/products
+Content-Type: application/json
+
+{
+  "name": "Wireless Headphones",
+  "price": 79.99,
+  "stock": 50,
+  "categoryId": 1
+}
+
+### REST - Update stock
+PUT {{host}}/api/products/1
+Content-Type: application/json
+
+{
+  "stock": 45
+}
+
+### GraphQL - Get Electronics sorted by price
+POST {{graphql}}
+Content-Type: application/json
+
+{
+  "query": "query { products(where: { category: { name: { eq: \"Electronics\" } } } order: { price: ASC }) { name price stock category { name } } }"
+}
+
+### GraphQL - Add a product via mutation
+POST {{graphql}}
+Content-Type: application/json
+
+{
+  "query": "mutation { addProduct(input: { name: \"Keyboard\", price: 49.99, stock: 30, categoryId: 1 }) { id name price } }"
+}
